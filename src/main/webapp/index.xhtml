@@ -9,11 +9,102 @@
 <h:head>
 
 	<title>Home</title>
+	<h:outputScript name="script.js" library="js" />
+	<h:outputStylesheet name="estilos.css" library="css" />
 </h:head>
 
 <h:body>
+	<h:form id="frm" enctype="multipart/form-data">
 
-Hola
-	
+		<!--    Genera el dialogo con onclick -->
+		<p:commandButton value="Nuevo" onclick="PF('wdlgPersona').show();" />
+
+		<!--  Lista de registrados -->
+		<p:dataTable id="dtPersonas" widgetVar="formatosTable"
+			styleClass="tablaSinCabecera" value="#{personaBean.lstPersonas}"
+			var="per" rows="10">
+
+			<f:facet name="header">
+				<p:outputPanel>
+					<h:outputText value="Buscar:" />
+					<p:inputText id="globalFilter"
+						onkeyup="filterAdvanced('formatosTable', this);"
+						style="width:150px" placeholder="Ingrese una palabra" />
+				</p:outputPanel>
+			</f:facet>
+
+			<p:column headerText="id" filterBy="#{per.idPersona}">
+				<p:outputLabel value="#{per.idPersona}" />
+			</p:column>
+
+			<p:column headerText="Nombres" filterBy="#{per.nombres}">
+				<p:outputLabel value="#{per.nombres}" />
+			</p:column>
+
+			<p:column headerText="Apellidos" filterBy="#{per.apellidos}">
+				<p:outputLabel value="#{per.apellidos}" />
+			</p:column>
+
+			<p:column>
+				<p:commandLink actionListener="#{personaBean.seleccionar(per)}"
+					oncomplete="PF('wdlgPersona').show();" update="frm:dlgPersona">
+					<p:graphicImage library="images" name="edit.jpg" />
+				</p:commandLink>
+			</p:column>
+
+
+		</p:dataTable>
+
+
+
+
+		<!--  El dialogo generado por el boton -->
+
+		<p:dialog id="dlgPersona" widgetVar="wdlgPersona" modal="true"
+			header="#{personaBean.titulo}" closable="true" closeOnEscape="true"
+			resizable="false" draggable="true">
+			<h:panelGrid columns="2">
+				<p:outputLabel value="Nombres" />
+				<p:inputText value="#{personaBean.persona.nombres}" />
+
+				<p:outputLabel value="Apellidos" />
+				<p:inputText value="#{personaBean.persona.apellidos}" />
+
+				<p:outputLabel value="Fecha Nacimiento" />
+				<p:calendar value="#{personaBean.fechaSeleccionada}" />
+
+				<p:outputLabel value="Sexo" />
+				<p:selectOneRadio value="#{personaBean.persona.sexo}">
+					<f:selectItem itemLabel="M" itemValue="M" />
+					<f:selectItem itemLabel="F" itemValue="F" />
+				</p:selectOneRadio>
+
+				<p:outputLabel value="Subir Foto" />
+				<p:fileUpload value="#{personaBean.foto}" mode="simple" />
+
+				<p:outputLabel value="Foto"
+					rendered="#{personaBean.persona.idPersona != 0}" />
+				<p:graphicImage value="/imagen/#{personaBean.persona.idPersona}"
+					width="120" height="120"
+					rendered="#{personaBean.persona.idPersona != 0}" />
+
+				<p:outputLabel value="Dirección" />
+				<p:inputTextarea value="#{personaBean.persona.direccion}"
+					counter="txtContador" maxlength="100"
+					counterTemplate="{0} caracteres restantes." autoResize="false" />
+
+				<h:column />
+				<h:outputText id="txtContador" />
+
+			</h:panelGrid>
+
+			<p:commandButton value="Aceptar"
+				actionListener="#{personaBean.operar()}" ajax="false"
+				action="index?faces-redirect=true" />
+		</p:dialog>
+
+
+
+	</h:form>
 </h:body>
 </html>
