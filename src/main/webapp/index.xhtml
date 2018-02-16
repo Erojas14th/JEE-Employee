@@ -10,6 +10,7 @@
 
 	<title>Home</title>
 	<h:outputScript name="script.js" library="js" />
+	<h:outputScript name="calendar.js" library="js" />
 	<h:outputStylesheet name="estilos.css" library="css" />
 </h:head>
 
@@ -71,7 +72,7 @@
 				<p:inputText value="#{personaBean.persona.apellidos}" />
 
 				<p:outputLabel value="Fecha Nacimiento" />
-				<p:calendar value="#{personaBean.fechaSeleccionada}" />
+				<p:calendar value="#{personaBean.fechaSeleccionada}" pattern="dd/MM/yyyy" mask="99/99/9999" locale="es"/>
 
 				<p:outputLabel value="Sexo" />
 				<p:selectOneRadio value="#{personaBean.persona.sexo}">
