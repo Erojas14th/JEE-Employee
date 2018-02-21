@@ -18,9 +18,11 @@
 	<h:form id="frm" enctype="multipart/form-data">
 
 		<!--    Genera el dialogo con onclick -->
-		<p:commandButton value="Nuevo" onclick="PF('wdlgPersona').show();" />
+		<!--    oncomplete se abre al carrgarse el dialogo , solo onclick se cerrara el dialogo cada ves q lo habras -->
+		<p:commandButton value="Nuevo" oncomplete="PF('wdlgPersona').show();"  actionListener="#{personaBean.limpiarControles()}" update="dlgPersona" />
 
-		<!--  Lista de registrados -->
+
+		<!--  Lista de registrados + filtrado JS -->
 		<p:dataTable id="dtPersonas" widgetVar="formatosTable"
 			styleClass="tablaSinCabecera" value="#{personaBean.lstPersonas}"
 			var="per" rows="10">
@@ -59,53 +61,80 @@
 
 
 
+
 		<!--  El dialogo generado por el boton -->
 
 		<p:dialog id="dlgPersona" widgetVar="wdlgPersona" modal="true"
 			header="#{personaBean.titulo}" closable="true" closeOnEscape="true"
 			resizable="false" draggable="true">
-			<h:panelGrid columns="2">
-				<p:outputLabel value="Nombres" />
-				<p:inputText value="#{personaBean.persona.nombres}" />
+			<h:panelGrid columns="4">
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Nombres" />
+					<p:inputText value="#{personaBean.persona.nombres}" />
 
-				<p:outputLabel value="Apellidos" />
-				<p:inputText value="#{personaBean.persona.apellidos}" />
+					<p:outputLabel value="Apellidos" />
+					<p:inputText value="#{personaBean.persona.apellidos}" />
 
-				<p:outputLabel value="Fecha Nacimiento" />
-				<p:calendar value="#{personaBean.fechaSeleccionada}" pattern="dd/MM/yyyy" mask="99/99/9999" locale="es"/>
+					<p:outputLabel value="Fecha Nacimiento" />
+					<p:calendar value="#{personaBean.fechaSeleccionada}"
+						pattern="dd/MM/yyyy" mask="99/99/9999" locale="es" />
 
-				<p:outputLabel value="Sexo" />
-				<p:selectOneRadio value="#{personaBean.persona.sexo}">
-					<f:selectItem itemLabel="M" itemValue="M" />
-					<f:selectItem itemLabel="F" itemValue="F" />
-				</p:selectOneRadio>
+					<p:outputLabel value="Sexo" />
+					<p:selectOneRadio value="#{personaBean.persona.sexo}">
+						<f:selectItem itemLabel="M" itemValue="M" />
+						<f:selectItem itemLabel="F" itemValue="F" />
+					</p:selectOneRadio>
 
-				<p:outputLabel value="Subir Foto" />
-				<p:fileUpload value="#{personaBean.foto}" mode="simple" />
+					<p:outputLabel value="Subir Foto" />
+					<p:fileUpload value="#{personaBean.foto}" mode="simple" />
 
-				<p:outputLabel value="Foto"
-					rendered="#{personaBean.persona.idPersona != 0}" />
-				<p:graphicImage value="/imagen/#{personaBean.persona.idPersona}"
-					width="120" height="120"
-					rendered="#{personaBean.persona.idPersona != 0}" />
+					<p:outputLabel value="Foto"
+						rendered="#{personaBean.persona.idPersona != 0}" />
+					<p:graphicImage value="/imagen/#{personaBean.persona.idPersona}"
+						width="120" height="120"
+						rendered="#{personaBean.persona.idPersona != 0}" />
 
-				<p:outputLabel value="Dirección" />
-				<p:inputTextarea value="#{personaBean.persona.direccion}"
-					counter="txtContador" maxlength="100"
-					counterTemplate="{0} caracteres restantes." autoResize="false" />
+					<p:outputLabel value="Dirección" />
+					<p:inputTextarea value="#{personaBean.persona.direccion}"
+						counter="txtContador" maxlength="100"
+						counterTemplate="{0} caracteres restantes." autoResize="false" />
 
-				<h:column />
-				<h:outputText id="txtContador" />
+					<h:column />
+					<h:outputText id="txtContador" />
+
+				</h:panelGrid>
+
+				<!--  Panel para el ingreso de telefonos -->
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Numero" />
+					<p:inputText value="#{personaBean.telefono.numero}" maxlength="9" />
+
+					<p:commandButton value="Agregar"
+						actionListener="#{personaBean.agregar()}" update="telefonos" />
+					<p:dataList id="telefonos" value="#{personaBean.lstTelefono}"
+						var="tel">
+						<p:outputLabel value="#{tel.numero}" />
+						<p:commandLink value="Remover" update="telefonos">
+							<p:confirm header="Confirmacion"
+								message="¿Desea remover el elemento?" icon="ui-icon-alert" />
+						</p:commandLink>
+					</p:dataList>
+
+				</h:panelGrid>
+
 
 			</h:panelGrid>
-
 			<p:commandButton value="Aceptar"
 				actionListener="#{personaBean.operar()}" ajax="false"
 				action="index?faces-redirect=true" />
 		</p:dialog>
-
-
-
+		<!--  Dialogo de eliminacion -->
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+			<p:commandButton value="Si" type="button"
+				styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+			<p:commandButton value="No" type="button"
+				styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+		</p:confirmDialog>
 	</h:form>
 </h:body>
 </html>

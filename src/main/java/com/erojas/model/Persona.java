@@ -2,12 +2,16 @@ package com.erojas.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -37,6 +41,10 @@ public class Persona  implements Serializable{
 
 	@Transient
 	private String campoAuxiliar;
+	
+	// Relation with Telefono
+	@OneToMany(mappedBy = "persona", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }, fetch = FetchType.EAGER, orphanRemoval=true)
+	private List<Telefono> telefonos;
 
 	public int getIdPersona() {
 		return idPersona;
@@ -102,6 +110,9 @@ public class Persona  implements Serializable{
 		this.campoAuxiliar = campoAuxiliar;
 	}
 
+	
+	
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -123,6 +134,17 @@ public class Persona  implements Serializable{
 			return false;
 		return true;
 	}
+
+	public List<Telefono> getTelefonos() {
+		return telefonos;
+	}
+
+	public void setTelefonos(List<Telefono> telefonos) {
+		this.telefonos = telefonos;
+	}
+	
+	
+	
 	
 	
 }

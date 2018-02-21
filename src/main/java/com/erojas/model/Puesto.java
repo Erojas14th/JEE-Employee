@@ -1,12 +1,16 @@
 package com.erojas.model;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity(name = "puesto")
@@ -24,6 +28,11 @@ public class Puesto implements Serializable {
 	private String nombre;
 	@Column(name = "salarioBase", columnDefinition = "Decimal(7,2)", nullable = false)
 	private double salarioBase;
+	
+	@OneToMany(mappedBy = "puesto", cascade = { CascadeType.PERSIST, CascadeType.MERGE,
+			CascadeType.REMOVE }, fetch = FetchType.LAZY, orphanRemoval = true)
+	private List<Funcion> funciones;
+	
 	public int getIdPuesto() {
 		return idPuesto;
 	}
@@ -61,6 +70,12 @@ public class Puesto implements Serializable {
 		if (idPuesto != other.idPuesto)
 			return false;
 		return true;
+	}
+	public List<Funcion> getFunciones() {
+		return funciones;
+	}
+	public void setFunciones(List<Funcion> funciones) {
+		this.funciones = funciones;
 	}
 	
 	
