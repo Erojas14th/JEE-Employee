@@ -3,6 +3,7 @@ package com.erojas.service.impl;
 import java.util.List;
 
 import javax.ejb.EJB;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
 import com.erojas.model.Puesto;
@@ -10,6 +11,7 @@ import com.erojas.repository.PuestoDAO;
 import com.erojas.service.PuestoService;
 
 @Named
+@RequestScoped
 public class PuestoServiceImpl implements PuestoService{
 	@EJB
 	private PuestoDAO dao;

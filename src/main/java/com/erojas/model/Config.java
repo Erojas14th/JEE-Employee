@@ -20,15 +20,18 @@ public class Config implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private byte id;
+	private short id;//byte id;
 	@Column(name = "nombre", length = 25, nullable = false)
 	private String nombre;
 	@Column(name = "valor", length = 100, nullable = false)
 	private String valor;
-	public byte getId() {
+
+
+	
+	public short getId() {
 		return id;
 	}
-	public void setId(byte id) {
+	public void setId(short id) {
 		this.id = id;
 	}
 	public String getNombre() {
