@@ -40,12 +40,18 @@ public class Persona  implements Serializable{
 	private byte[] foto;
 
 	@Transient
-	private String campoAuxiliar;
+	private String nombreCompleto;	
 	
 	// Relation with Telefono
 	@OneToMany(mappedBy = "persona", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }, fetch = FetchType.EAGER, orphanRemoval=true)
 	private List<Telefono> telefonos;
 
+	public String getNombreCompleto() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(nombres).append(", ").append(apellidos);
+		return sb.toString();
+	}
+	
 	public int getIdPersona() {
 		return idPersona;
 	}
@@ -102,13 +108,6 @@ public class Persona  implements Serializable{
 		this.foto = foto;
 	}
 
-	public String getCampoAuxiliar() {
-		return campoAuxiliar;
-	}
-
-	public void setCampoAuxiliar(String campoAuxiliar) {
-		this.campoAuxiliar = campoAuxiliar;
-	}
 
 	
 	
