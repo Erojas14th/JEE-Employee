@@ -3,18 +3,38 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui"
-      xmlns:h="http://java.sun.com/jsf/html">
+	xmlns:h="http://java.sun.com/jsf/html">
 <h:head>
-<title><ui:insert name="title">Gestor de Contratos</ui:insert></title>
+	<title><ui:insert name="title">Gestor de Contratos</ui:insert></title>
 	<h:outputScript name="script.js" library="js" />
 	<h:outputScript name="calendar.js" library="js" />
 	<h:outputStylesheet name="estilos.css" library="css" />
 </h:head>
 
-<body>
+<body class="resolucion">
 
 	<ui:insert name="header">
-		Cabecera por defecto
+<p:ajaxStatus onstart="PF('wdlgCargando').show()" onsuccess="PF('wdlgCargando').hide()" />
+ 
+		<p:dialog widgetVar="wdlgCargando" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+		    <p:graphicImage library="images" name="cargando.gif" />
+		</p:dialog>		
+
+		
+		<h:form id="frmMenu">
+			<p:menubar autoDisplay="false" style="width: 735px;">
+				<p:menuitem icon="ui-icon-home" value="Inicio" action="index?faces-redirect=true"/>
+				<p:menuitem icon="ui-icon-person" value="Puestos" action="puesto?faces-redirect=true"/>
+				<p:menuitem icon="ui-icon-document" value="Contratos" action="contrato?faces-redirect=true"/>
+				
+			
+				
+			</p:menubar>
+			
+			<p:commandButton icon="ui-icon-gear" action="config?faces-redirect=true" style="height: 42px; float:right; margin-top: -42px;"/>
+		</h:form>
+		
+		<p:separator/>
 	</ui:insert>
 
 

@@ -29,12 +29,12 @@ public class PersonaDAOImpl implements PersonaDAO {
 
 	@Override
 	public void modificar(Persona t) throws Exception {
-		try {
-
-			em.merge(t);
-
-		} catch (Exception e) {
-			e.printStackTrace();
+		em.merge(t);
+		if(t.getFoto() != null && t.getFoto().length > 0){
+			Query query = em.createQuery("UPDATE Persona SET foto = ?1 WHERE idPersona = ?2");
+			query.setParameter(1, t.getFoto());
+			query.setParameter(2, t.getIdPersona());
+			query.executeUpdate();
 		}
 
 	}
